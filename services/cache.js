@@ -17,11 +17,9 @@ mongoose.Query.prototype.exec = async function () {
     if (!this.useCache) {
         return await exec.apply(this, arguments);
     }
-
     const key = JSON.stringify(Object.assign({}, this.getQuery(), {
         collection: this.mongooseCollection.name
     }))
-
     const cachedValue = await client.hget(this.hashKey, key)
     if (cachedValue) {
         // when we add new data we must flush previous cache by doing client.flushall();
@@ -30,7 +28,6 @@ mongoose.Query.prototype.exec = async function () {
          ? doc.map((d) => new this.model(d))
          : new this.model(doc);
     }
-
     const result = await exec.apply(this, arguments);
     client.hset(this.hashKey, key,JSON.stringify(result));
     return result;
@@ -39,6 +36,7 @@ mongoose.Query.prototype.exec = async function () {
 const clearHash = (hashKey) => {
     client.del(JSON.stringify(hashKey));
 }
+
 
 module.exports = {
     clearHash
