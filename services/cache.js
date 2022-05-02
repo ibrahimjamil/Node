@@ -25,7 +25,6 @@ mongoose.Query.prototype.exec = async function () {
     const cachedValue = await client.hget(this.hashKey, key)
     if (cachedValue) {
         // when we add new data we must flush previous cache by doing client.flushall();
-        console.log("from cache")
         const doc = JSON.parse(cachedValue);
         return Array.isArray(doc)
          ? doc.map((d) => new this.model(d))
