@@ -34,7 +34,7 @@ mongoose.Query.prototype.exec = async function () {
 }
 
 const clearHash = (hashKey) => {
-    client.del(JSON.stringify(hashKey));
+    client.del(JSON.stringify(hashKey))
 }
 
 
